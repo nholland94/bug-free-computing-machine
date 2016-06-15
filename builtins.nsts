@@ -1,0 +1,1 @@
+extern fun main(args: array(string)): int

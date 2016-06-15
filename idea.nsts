@@ -1,0 +1,16 @@
+implement main(args) =
+  if array_length(args) == 1 then {
+    print_string("No arguments provided!\n");
+    1
+  } else {
+    while {filename | filenames} = filenames do {
+      file = file_open(filename, FILE_MODE_R);
+      contents = file_read_string(file);
+      print_string(contents);
+      free(contents);
+      file_close(file);
+    }
+
+    loop(args);
+    0
+  }

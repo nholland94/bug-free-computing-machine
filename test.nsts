@@ -1,0 +1,12 @@
+implement main(args) =
+  if array_length(args) == 1 then {
+    print_string("No arguments provided!\n");
+    1
+  } else {
+    files = array_map(args, fn(filename) -> file_open(filename, FILE_MODE_R) end);
+    file_contents = array_map(files, file_read_string);
+    array_each(files, file_close);
+    array_each(file_contents, print_string);
+    array_each(file_contents, free);
+    0
+  }
