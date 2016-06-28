@@ -1,4 +1,5 @@
 {
+  open Ast
   open Parser
   exception Eof
 }
@@ -7,7 +8,7 @@ rule token = parse
   (* whitespace and comments *)
     [' ' '\t' '\n'] { token lexbuf }
   | "//" [^ '\n']*  { token lexbuf }
-  | "/*" .* "*/"    { token lexbuf }
+  | "/*" _* "*/"    { token lexbuf }
 
   (* symbols *)
   | '('  { LEFT_PAREN }
@@ -42,6 +43,7 @@ rule token = parse
   | "implement"  { KEYWORD_IMPLEMENT }
 
   (* non static lexical components *)
-  | '-' [0-9]*                                       { INTEGER(Lexing.lexeme lexbuf) }
-  | '"' ( ('\' . | [^'"']) as string_body ) '"'      { STRING(string_body)
+  | '-' ['0' - '9']*                                       { INTEGER(Lexing.lexeme lexbuf) }
+  | '"' ( ('\\' _ | [^'"']) as string_body ) '"'      { STRING(string_body) }
   | ['a'-'z' 'A'-'Z'] ['a'-'z' 'A'-'Z' '0'-'9' '_']* { ATOM(Lexing.lexeme lexbuf) }
+  | eof { raise Eof }

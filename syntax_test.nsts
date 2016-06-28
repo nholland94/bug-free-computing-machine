@@ -1,0 +1,4 @@
+implement main(args) = {
+  print_string "Hello World";
+  0
+}
